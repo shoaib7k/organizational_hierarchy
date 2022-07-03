@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->text('name');
-            $table->unsignedBigInteger('leader')->nullable();
+            $table->unsignedBigInteger('employee_id')->nullable();
             $table->unsignedBigInteger('division_id')->nullable();
-            $table->foreign('leader')
+            $table->foreign('employee_id')
                 ->references('id')->on('employees')->onDelete('set null');
             $table->foreign('division_id')
                 ->references('id')->on('divisions')->onDelete('set null');

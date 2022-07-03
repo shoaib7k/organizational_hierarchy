@@ -10,10 +10,10 @@ class Team extends Model
     use HasFactory;
 
     protected $fillable=[
-        'name','leader','department_id'
+        'name','employee_id','department_id'
     ];
     public function employees(){
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsToMany(Employee::class)->withPivot('team_lead');
     }
 
     public function departments(){

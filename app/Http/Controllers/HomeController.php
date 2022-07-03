@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index(){
         $divisions=Division::all();
-        $employees=Employee::all();
-        return view('home',['divisions'=> $divisions,'employees'=>$employees]);
+
+        return view('home',['divisions'=> $divisions]);
     }
 }

@@ -9,7 +9,7 @@ class Division extends Model
 {
     use HasFactory;
     protected $fillable=[
-        'name','leader'
+        'name','employee_id'
     ];
 
     public function departments(){

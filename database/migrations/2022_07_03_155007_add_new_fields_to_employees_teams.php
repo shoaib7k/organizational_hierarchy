@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('divisions', function (Blueprint $table) {
-            $table->id();
-            $table->text('name');
-            $table->unsignedBigInteger('employee_id')->nullable();
-            $table->foreign('employee_id')
-                ->references('id')->on('employees')->onDelete('set null');
-            //$table->timestamps();
+        Schema::table('employee_team', function (Blueprint $table) {
+            $table->boolean('team_lead');
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('divisions');
+        Schema::table('employee_team', function (Blueprint $table) {
+            $table->dropColumn('team_lead');
+        });
     }
 };

@@ -10,7 +10,7 @@ class Employee extends Model
     use HasFactory;
 
     protected $fillable=[
-        'name'
+        'firstName','lastName'
     ];
     public function divisions(){
         return $this->belongsToMany(Division::class);
