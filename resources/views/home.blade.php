@@ -17,7 +17,6 @@
             </td>
             <td class="department admin" rowspan="2">
                 <div class="company">
-                    {{-- {{$divisions[$key]->employees}} --}}
                   <form>
 
                     <p>{{$divisions[$key]->employees[0]->firstName.$divisions[$key]->employees[0]->lastName}}<span  style="color:blue">&nbsp; Division Lead</span></p>
@@ -113,7 +112,6 @@
                               </div>
                             <div class="team show">
                                 <div class="company">
-                                    {{-- {{$departments->teams[$key3]}} --}}
                                     @foreach ($departments->teams[$key3]->employees as $key4=>$value4)
 
                                         <form>Team Employee
