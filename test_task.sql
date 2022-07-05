@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2022 at 08:32 PM
+-- Generation Time: Jul 05, 2022 at 06:26 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.4
 
@@ -53,23 +53,24 @@ INSERT INTO `departments` (`id`, `name`, `employee_id`, `division_id`) VALUES
 
 CREATE TABLE `department_employee` (
   `department_id` bigint(20) UNSIGNED NOT NULL,
-  `employee_id` bigint(20) UNSIGNED NOT NULL
+  `employee_id` bigint(20) UNSIGNED NOT NULL,
+  `department_lead` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `department_employee`
 --
 
-INSERT INTO `department_employee` (`department_id`, `employee_id`) VALUES
-(1, 5),
-(1, 6),
-(1, 9),
-(2, 3),
-(3, 6),
-(4, 4),
-(4, 12),
-(5, 1),
-(5, 3);
+INSERT INTO `department_employee` (`department_id`, `employee_id`, `department_lead`) VALUES
+(1, 5, 1),
+(1, 6, 0),
+(1, 9, 0),
+(2, 3, 1),
+(3, 6, 1),
+(4, 4, 1),
+(4, 12, 0),
+(5, 1, 0),
+(5, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -100,20 +101,21 @@ INSERT INTO `divisions` (`id`, `name`, `employee_id`) VALUES
 
 CREATE TABLE `division_employee` (
   `division_id` bigint(20) UNSIGNED NOT NULL,
-  `employee_id` bigint(20) UNSIGNED NOT NULL
+  `employee_id` bigint(20) UNSIGNED NOT NULL,
+  `division_lead` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `division_employee`
 --
 
-INSERT INTO `division_employee` (`division_id`, `employee_id`) VALUES
-(1, 14),
-(2, 6),
-(2, 19),
-(3, 3),
-(3, 4),
-(3, 7);
+INSERT INTO `division_employee` (`division_id`, `employee_id`, `division_lead`) VALUES
+(1, 14, 1),
+(2, 6, 0),
+(2, 19, 1),
+(3, 3, 1),
+(3, 4, 0),
+(3, 7, 0);
 
 -- --------------------------------------------------------
 
@@ -124,35 +126,34 @@ INSERT INTO `division_employee` (`division_id`, `employee_id`) VALUES
 CREATE TABLE `employees` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `firstName` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastName` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `division_leader` tinyint(1) NOT NULL
+  `lastName` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `employees`
 --
 
-INSERT INTO `employees` (`id`, `firstName`, `lastName`, `division_leader`) VALUES
-(1, 'Employee', 'One', 0),
-(2, 'Employee', 'Two', 0),
-(3, 'Employee', 'Three', 1),
-(4, 'Employee', 'Four', 0),
-(5, 'Employee', 'Five', 0),
-(6, 'Employee', 'Six', 0),
-(7, 'Employee', 'Seven', 0),
-(8, 'Employee', 'Eight', 0),
-(9, 'Employee', 'Nine', 0),
-(10, 'Employee', 'Ten', 0),
-(11, 'Employee', 'Eleven', 0),
-(12, 'Employee', 'Twelve', 0),
-(13, 'Employee', 'Thirteen', 0),
-(14, 'Employee', 'Fourteen', 1),
-(15, 'Employee', 'Fifteen', 0),
-(16, 'Employee', 'Sixteen', 0),
-(17, 'Employee', 'Seventeen', 0),
-(18, 'Employee', 'Eighteen', 0),
-(19, 'Employee', 'Nineteen', 1),
-(20, 'Employee', 'Twenty', 0);
+INSERT INTO `employees` (`id`, `firstName`, `lastName`) VALUES
+(1, 'Employee', 'One'),
+(2, 'Employee', 'Two'),
+(3, 'Employee', 'Three'),
+(4, 'Employee', 'Four'),
+(5, 'Employee', 'Five'),
+(6, 'Employee', 'Six'),
+(7, 'Employee', 'Seven'),
+(8, 'Employee', 'Eight'),
+(9, 'Employee', 'Nine'),
+(10, 'Employee', 'Ten'),
+(11, 'Employee', 'Eleven'),
+(12, 'Employee', 'Twelve'),
+(13, 'Employee', 'Thirteen'),
+(14, 'Employee', 'Fourteen'),
+(15, 'Employee', 'Fifteen'),
+(16, 'Employee', 'Sixteen'),
+(17, 'Employee', 'Seventeen'),
+(18, 'Employee', 'Eighteen'),
+(19, 'Employee', 'Nineteen'),
+(20, 'Employee', 'Twenty');
 
 -- --------------------------------------------------------
 
@@ -177,7 +178,7 @@ INSERT INTO `employee_team` (`employee_id`, `team_id`, `team_lead`) VALUES
 (3, 4, 0),
 (4, 2, 0),
 (4, 3, 0),
-(4, 7, 0),
+(4, 7, 1),
 (7, 2, 0),
 (7, 4, 0),
 (8, 4, 0),
@@ -240,7 +241,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (8, '2022_06_30_182342_create_teams_table', 1),
 (9, '2022_07_02_013518_create_division_employee_pivot_table', 1),
 (10, '2022_07_02_190714_create_department_employee_pivot_table', 2),
-(11, '2022_07_02_192554_create_employee_team_pivot_table', 3);
+(11, '2022_07_02_192554_create_employee_team_pivot_table', 3),
+(15, '2022_07_03_155007_add_new_fields_to_employees_teams', 4),
+(16, '2022_07_05_140510_add_new_field_division_employee', 4),
+(17, '2022_07_05_145813_add_new_field_department_employee', 5);
 
 -- --------------------------------------------------------
 
@@ -414,7 +418,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `divisions`
@@ -438,7 +442,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

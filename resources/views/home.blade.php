@@ -7,7 +7,7 @@
 
 
         <!-- start division-->
-            <tr>
+            <tr >
             <td class="division show" rowspan="2">
                 <div class="company">
                 <form>Division
@@ -18,11 +18,16 @@
             <td class="department admin" rowspan="2">
                 <div class="company">
                   <form>
-
-                    <p>{{$divisions[$key]->employees[0]->firstName.$divisions[$key]->employees[0]->lastName}}<span  style="color:blue">&nbsp; Division Lead</span></p>
                     @foreach ($divisions[$key]->employees as $key2=>$value2)
-                  </p>
-                    @if ($divisions[$key]->employees[0]->lastName!=$divisions[$key]->employees[$key2]->lastName)
+                    @if ($divisions[$key]->employees[$key2]->pivot->division_lead==1)
+                    <p>{{$divisions[$key]->employees[$key2]->firstName.$divisions[$key]->employees[$key2]->lastName}}<span  style="color:blue">&nbsp; Division Lead</span></p>
+                    @endif
+                    @endforeach
+
+                    @foreach ($divisions[$key]->employees as $key2=>$value2)
+
+                    @if ($divisions[$key]->employees[$key2]->pivot->division_lead==0)
+
                     <form>Division Employee
                         <input type="text" value={{$divisions[$key]->employees[$key2]->firstName.$divisions[$key]->employees[$key2]->lastName}} readonly>
                       </form>
@@ -60,9 +65,16 @@
                 <td class="teams show">
                     <div class="team admin">
                     <div class="company">
-                        <form>
-                        <p>{{$departments->employees[0]->firstName}}{{$departments->employees[0]->lastName}}<span style="color: lightblue">&nbsp; Department Lead</span></p>
-                        </form>
+                        @foreach ($departments->employees as $key2=>$value2)
+                            @if ($departments->employees[$key2]->pivot->department_lead==1)
+                                <form>
+                                    <p>{{$departments->employees[$key2]->firstName}}{{$departments->employees[$key2]->lastName}}<span style="color: lightblue">&nbsp; Department Lead</span></p>
+                                </form>
+                            @endif
+
+                        @endforeach
+
+
                     </div>
                     </div>
 
@@ -71,7 +83,7 @@
                         <div class="company">
                             @foreach ($departments->employees as $key2=>$value2)
                             {{-- {{$departments->employees}} --}}
-                            @if ($departments->employees[0]->lastName!=$departments->employees[$key2]->lastName)
+                            @if ($departments->employees[$key2]->pivot->department_lead==0)
 
 
                                 <form>Department Employee
@@ -103,7 +115,7 @@
                                 @foreach ($departments->teams[$key3]->employees as $key4=>$value4)
                                     @if($departments->teams[$key3]->employees[$key4]->pivot->team_lead==1)
                                     <form>
-                                        <p>{{$departments->teams[$key3]->employees[$key4]->firstName.$departments->teams[$key3]->employees[$key4]->lastName}}<span style="color: rgb(61, 95, 93)">&nbsp; Team Lead</span></p>
+                                        <p>{{$departments->teams[$key3]->employees[$key4]->firstName.$departments->teams[$key3]->employees[$key4]->lastName}}<span style="color: rgb(201, 231, 30)">&nbsp; Team Lead</span></p>
                                     </form>
                                     @endif
                                     @endforeach
@@ -113,10 +125,11 @@
                             <div class="team show">
                                 <div class="company">
                                     @foreach ($departments->teams[$key3]->employees as $key4=>$value4)
-
-                                        <form>Team Employee
-                                            <input type="text" value={{$departments->teams[$key3]->employees[$key4]->firstName.$departments->teams[$key3]->employees[$key4]->lastName}} readonly>
-                                        </form>
+                                    @if($departments->teams[$key3]->employees[$key4]->pivot->team_lead==0)
+                                            <form>Team Employee
+                                                <input type="text" value={{$departments->teams[$key3]->employees[$key4]->firstName.$departments->teams[$key3]->employees[$key4]->lastName}} readonly>
+                                            </form>
+                                    @endif
                                     @endforeach
                                 </div>
                             </div>

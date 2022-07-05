@@ -16,6 +16,6 @@ class Division extends Model
         return $this->hasMany(Department::class);
     }
     public function employees(){
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsToMany(Employee::class)->withPivot('division_lead');
     }
 }
